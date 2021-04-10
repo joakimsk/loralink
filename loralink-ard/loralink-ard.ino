@@ -1,6 +1,9 @@
 #include <SPI.h>
 #include <LoRa.h>
 
+int counter = 0;
+
+
 void setup() {
   Serial.begin(9600);
   while (!Serial);
@@ -9,10 +12,22 @@ void setup() {
     Serial.println("Starting LoRa failed!");
     while (1);
   }
+  Serial.println("LoRa started");
   LoRa.setSyncWord(0xF3);
   LoRa.setTxPower(20);
 }
 
 void loop() {
+  Serial.print("Sending packet: ");
+  Serial.println(counter);
 
+  // send packet
+  LoRa.beginPacket();
+  LoRa.print("hello ");
+  LoRa.print(counter);
+  LoRa.endPacket();
+
+  counter++;
+
+  delay(5000);
 }
